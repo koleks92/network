@@ -3,3 +3,11 @@
 .new_post {
     border: 1px solid black;
 }
+
+#all_posts {
+    border: 1px solid black;
+}
+
+.post {
+    border: 1px solid black
+}

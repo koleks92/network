@@ -18,5 +18,16 @@
             </form>
         </div>
     {% endif%}
+    <div id="all_posts">
+        {% for post in posts %}
+        <div class="post">
+            <div class="post_user">{{ post.user }}</div>
+            <div class="post_body">{{ post.body }}</div>
+            <div class="post_date">{{ post.date }}</div>
+            <div class="post_likes">{{ likes }}</div>
+        </div>
+        {% endfor %}
+
+    </div>
 </div>
 {% endblock %}

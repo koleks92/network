@@ -12,7 +12,13 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.all()
+    posts = posts.order_by("-date").all()
+
+    return render(request, "network/index.html", {
+        "posts": posts,
+        "likes": 0
+    })
 
 
 def login_view(request):
