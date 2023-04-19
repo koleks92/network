@@ -20,6 +20,19 @@ def index(request):
         "likes": 0
     })
 
+def profile(request, user_name):
+    posts = Post.objects.filter(user=request.user)
+    posts = posts.order_by("-date").all()
+
+    current_user = False
+    if user_name == str(request.user):
+        current_user = True
+    return render(request, "network/profile.html",{
+        "user_name": user_name,
+        "user_posts": posts,
+        "current_user": current_user
+        })
+
 
 def login_view(request):
     if request.method == "POST":
