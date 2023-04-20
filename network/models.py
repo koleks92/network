@@ -12,8 +12,11 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)                        # User
     likes = models.ManyToManyField(User, blank=True, related_name="users_likes")    # Likes
 
-
     def __str__(self):
         return str(self.user) + "_" + str(self.id)
+    
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)                                    # User
+    followed_users = models.ManyToManyField(User, blank=True, related_name="followed")          # Followed users by user !
 
     
