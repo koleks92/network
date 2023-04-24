@@ -1,14 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 
-from .models import User, Post, Follow
+from .models import User, Post
 
 
 def index(request):
@@ -19,6 +19,7 @@ def index(request):
         "posts": posts,
         "likes": 0
     })
+<<<<<<< HEAD
    
 
 def profile(request, user):
@@ -45,17 +46,22 @@ def profile(request, user):
         user_follows = 0
 
     # Check if profile page is currently loggedin user
+=======
+
+def profile(request, user_name):
+    posts = Post.objects.filter(user=request.user)
+    posts = posts.order_by("-date").all()
+
+>>>>>>> parent of 84bc927 (Profile Follows/Followers)
     current_user = False
-    if user.username == str(request.user):
+    if user_name == str(request.user):
         current_user = True
 
 
     return render(request, "network/profile.html",{
-        "user_name": user.username,
+        "user_name": user_name,
         "user_posts": posts,
-        "user_follows": user_follows,
-        "user_followers": user_followers,
-        "current_user": current_user,
+        "current_user": current_user
         })
 
 
