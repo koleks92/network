@@ -44,11 +44,11 @@ def profile(request, user):
     except:
         user_follows = 0
 
-
-
+    # Get if current user is watching the page !
     current_user = False
     if user.username == str(request.user):
         current_user = True
+
     return render(request, "network/profile.html",{
         "user_name": user.username,
         "user_posts": posts,
@@ -109,7 +109,6 @@ def register(request):
     else:
         return render(request, "network/register.html")
     
-@csrf_exempt
 @login_required
 def create_post(request):
     # Composing a new post must be via POST
@@ -126,3 +125,34 @@ def create_post(request):
     p.save()
 
     return JsonResponse({"message": "Post sent successfully."}, status=201)
+
+@csrf_exempt
+@login_required
+def follow_unfollow(request, user_name):
+    user_2_follow = get_object_or_404(User, username=user_name)
+
+    if request.method == "GET":
+        if Follow.objects.filter(user=request.user, followed_users=user_2_follow).exists():
+            message = "Followed"
+        else:
+            message = "Unfollowed"
+
+        return JsonResponse({"message": message}, status=200)
+    
+    # Check if PUT
+    if request.method == "PUT":
+        
+        if Follow.objects.filter(user=request.user, followed_users=user_2_follow).exists():
+            # Unfollow the user
+            Follow.objects.filter(user=request.user, followed_users=user_2_follow).delete()
+            message = "Unfollowed"
+        else:
+            # Follow the user
+            follow, created = Follow.objects.get_or_create(user=request.user)
+            follow.followed_users.set([user_2_follow])
+            message = "Followed"
+
+        return JsonResponse({"message": message}, status=200)
+
+
+

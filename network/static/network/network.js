@@ -1,29 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Use buttons to toggle between views
-    document.querySelector('#all_posts').addEventListener('click', () => load_page('all_posts'));
-    document.querySelector('#profile').addEventListener('click', () => profile());
-    document.querySelector('#following').addEventListener('click', () => load_page('following'));
-
-    // By default, load the inbox
-    load_page('all_posts');
-});
-
-function load_page(page) {
-    // Show the load_page and hide other views
-    document.querySelector('#load_page').style.display = 'block';
-    document.querySelector('#profile').style.display = 'none';
-}
-
-function profile() {
-    // Show the profile and hide other views
-    document.querySelector('#load_page').style.display = 'none';
-    document.querySelector('#profile').style.display = 'block';
-
-}
-
-function submit() {
-    document.querySelector('#new_post_form').onsubmit = () => 
+const currentRoute = window.location.pathname;
+console.log(currentRoute);
+if (currentRoute == '/')
     {
+    document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#new_post_form').onsubmit = () => 
+        {
         // Select button and content
         const body = document.querySelector('#new_post_text');
 
@@ -43,6 +24,48 @@ function submit() {
             location.reload()
         })
         return false;
+        }
+    }); 
     }
-}
-
+else if (currentRoute.startsWith('/profile'))
+    {
+        const user_name = currentRoute.split('/').pop();
+        fetch(`/follow_unfollow/${user_name}`, {
+            method: "GET",
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+            // Update the UI to reflect the new follow status
+            const followButton = document.getElementById('follow_button');
+            const button = document.createElement('button');
+            if (data.message === "Followed") {
+                button.innerText = 'Unfollow';
+            } else {
+                button.innerText = 'Follow';
+            }
+            button.addEventListener('click', function()
+            { 
+                fetch(`/follow_unfollow/${user_name}`, {
+                    method: "PUT",
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    // Update the UI to reflect the new follow status + Add 1 or Remove 1 from user_followers number
+                    if (data.message === "Followed") {
+                        button.innerText = 'Unfollow';
+                        let numberOfFollowers = document.getElementById("user_followers")
+                        let intNumberOfFollowers = parseInt(numberOfFollowers.innerHTML);
+                        numberOfFollowers.innerHTML = intNumberOfFollowers + 1;
+                    } else {
+                        button.innerText = 'Follow';
+                        let numberOfFollowers = document.getElementById("user_followers")
+                        let intNumberOfFollowers = parseInt(numberOfFollowers.innerHTML);
+                        numberOfFollowers.innerHTML = intNumberOfFollowers - 1;
+                    }
+                });
+            });
+            followButton.append(button)
+        })
+    }
