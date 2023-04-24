@@ -44,11 +44,12 @@ def profile(request, user):
     except:
         user_follows = 0
 
-
-
+    # Check if profile page is currently loggedin user
     current_user = False
     if user.username == str(request.user):
         current_user = True
+
+
     return render(request, "network/profile.html",{
         "user_name": user.username,
         "user_posts": posts,
