@@ -19,7 +19,6 @@ def index(request):
         "posts": posts,
         "likes": 0
     })
-<<<<<<< HEAD
    
 
 def profile(request, user):
@@ -46,13 +45,6 @@ def profile(request, user):
         user_follows = 0
 
     # Check if profile page is currently loggedin user
-=======
-
-def profile(request, user_name):
-    posts = Post.objects.filter(user=request.user)
-    posts = posts.order_by("-date").all()
-
->>>>>>> parent of 84bc927 (Profile Follows/Followers)
     current_user = False
     if user_name == str(request.user):
         current_user = True

@@ -1,0 +1,30 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div id="profile_div">
+    <div id="profile_title"><h1>{{ user_name }}</h1></div>
+    {% if current_user %}
+    {% else %}
+        <div id="follow_button"></div>
+    {% endif %}
+    <div id="profile_followers">Followers: {{ user_followers }}</div>
+    <div id="profile_following">Follows: {{ user_follows }}</div>
+    <div id="profile_posts">
+        <div id="all_posts">
+            {% if user_posts %}
+                {% for post in user_posts %}
+                <div class="post">
+                    <div class="post_user">{{ post.user }}</div>
+                    <div class="post_body">{{ post.body }}</div>
+                    <div class="post_date">{{ post.date }}</div>
+                    <div class="post_likes">{{ likes }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                There are no posts!
+            {% endif %}
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
