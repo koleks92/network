@@ -22,6 +22,9 @@
     <div id="all_posts">
         {% for post in page_obj %}
         <div class="post">
+            {% if request.user == post.user %}
+                <div class="edit_button"><button value="{{ post.id }}">Edit</button></div>
+            {% endif %}
             <div class="post_user">{{ post.user }}</div>
             <div class="post_body">{{ post.body }}</div>
             <div class="post_date">{{ post.date }}</div>

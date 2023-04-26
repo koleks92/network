@@ -1,12 +1,11 @@
 const currentRoute = window.location.pathname;
 if (currentRoute === '/')
-    {
+    { // Creating new post
     document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#new_post_form').onsubmit = () => 
         {
         // Select button and content
         const body = document.querySelector('#new_post_text');
-
 
         fetch('/create_post', 
         {
@@ -25,10 +24,38 @@ if (currentRoute === '/')
         })
         return false;
         }
+
+    // Get all edit buttons
+    const editButtons = document.querySelectorAll('.edit_button');
+
+    // Add a click event listener to each edit button
+    editButtons.forEach(function(editButton) {
+    editButton.addEventListener('click', function(event) {
+        // Get the parent element of the clicked button
+        const postDiv = event.target.parentNode.parentNode;
+
+        // Get body and edit button
+        const body = postDiv.querySelector('.post_body');
+        const button = postDiv.querySelector('.edit_button');
+
+
+        // Create textare for edit
+        const edit = document.createElement("textarea");
+        edit.innerHTML = body.innerHTML;
+        postDiv.replaceChild(edit, body);
+
+        // Create button to save
+        const save = document.createElement("button");
+        save.innerText = "Save";
+        postDiv.replaceChild(save, button);
+        
+    });
+    });
+        
     }); 
     }
 else if (currentRoute.startsWith('/profile'))
-    {
+    { // Follow/Unfollow
         const user_name = currentRoute.split('/').pop();
         fetch(`/follow_unfollow/${user_name}`, {
             method: "GET",

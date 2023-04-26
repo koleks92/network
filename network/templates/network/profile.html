@@ -14,6 +14,9 @@
             {% if user_posts %}
                 {% for post in user_posts %}
                 <div class="post">
+                    {% if current_user %}
+                        <div class="edit_div"><button class="edit_button" value="{{ post.id }}">Edit</button></div>
+                    {% endif %}
                     <div class="post_user">{{ post.user }}</div>
                     <div class="post_body">{{ post.body }}</div>
                     <div class="post_date">{{ post.date }}</div>

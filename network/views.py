@@ -14,6 +14,9 @@ from .models import User, Post, Follow
 
 
 def index(request):
+    # Get user
+    user = get_object_or_404(User, username = request.user)
+
     posts = Post.objects.all()
     posts = posts.order_by("-date").all()
 
@@ -23,6 +26,7 @@ def index(request):
     # Get Page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
 
     return render(request, "network/index.html", {
         "page_obj": page_obj,
