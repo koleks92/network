@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.paginator import Paginator
+
 import json
 
 from .models import User, Post, Follow
@@ -15,8 +17,15 @@ def index(request):
     posts = Post.objects.all()
     posts = posts.order_by("-date").all()
 
+    # Show only 10 post at one page
+    paginator = Paginator(posts, 10)
+
+    # Get Page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/index.html", {
-        "posts": posts,
+        "page_obj": page_obj,
         "likes": 0
     })
    
@@ -164,8 +173,16 @@ def following(request):
         posts = Post.objects.filter(user__in=followed_users)
         posts = posts.order_by("-date").all()
 
+        # Show only 10 post at one page
+        paginator = Paginator(posts, 10)
+
+        # Get Page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+
         return render(request, "network/following.html", {
-            "posts": posts,
+            "page_obj": page_obj,
             "likes": 0
         })
     except:
