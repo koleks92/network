@@ -109,6 +109,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
     
+@csrf_exempt
 @login_required
 def create_post(request):
     # Composing a new post must be via POST
@@ -153,6 +154,27 @@ def follow_unfollow(request, user_name):
             message = "Followed"
 
         return JsonResponse({"message": message}, status=200)
+    
+@login_required
+def following(request):
+    # Get user's follows
+    try:
+        user = Follow.objects.get(user = request.user)
+        followed_users = user.followed_users.all()
+        posts = Post.objects.filter(user__in=followed_users)
+        posts = posts.order_by("-date").all()
+
+        return render(request, "network/following.html", {
+            "posts": posts,
+            "likes": 0
+        })
+    except:
+        return render(request, "network/error.html", {
+            "title": "Followings",
+            "message": "This user doesn't follow anybody yet !"
+        })
+
+
 
 
 

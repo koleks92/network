@@ -1,12 +1,12 @@
 const currentRoute = window.location.pathname;
-console.log(currentRoute);
-if (currentRoute == '/')
+if (currentRoute === '/')
     {
     document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#new_post_form').onsubmit = () => 
         {
         // Select button and content
         const body = document.querySelector('#new_post_text');
+
 
         fetch('/create_post', 
         {
