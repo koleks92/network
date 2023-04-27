@@ -194,6 +194,38 @@ def following(request):
             "title": "Followings",
             "message": "This user doesn't follow anybody yet !"
         })
+    
+@csrf_exempt    
+@login_required
+def edit(request, post_id):
+    try:
+        if request.method == "POST":
+            # Get post
+            post = Post.objects.get(id = post_id)
+
+            # Check if post user is actually logges in user
+            if post.user != request.user:
+                return render(request, "network/error.html", {
+                "title": "Edit",
+                "message": "You are not allowed to change this post !"
+                })
+
+            # Get data
+            data = json.loads(request.body)
+
+            # Get post text
+            edit_body = data.get("body", "")
+
+            post.body = edit_body
+            post.save()
+         
+            return JsonResponse({"message": "Edit sucessful"}, status=200)
+
+    except:
+        return render(request, "network/error.html", {
+            "title": "Edit",
+            "message": "There's beenn an error. Please try again !"
+        })
 
 
 
