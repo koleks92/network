@@ -25,10 +25,14 @@
             {% if request.user == post.user %}
                 <button class="edit_button" value="{{ post.id }}">Edit</button>
             {% endif %}
+            <div class="post_id">{{ post.id }}</div>
             <div class="post_user">{{ post.user }}</div>
             <div class="post_body">{{ post.body }}</div>
             <div class="post_date">{{ post.date }}</div>
-            <div class="post_likes">{{ likes }}</div>
+            {% if user.is_authenticated %}
+            <div class="post_like_button"></div>
+            {% endif %}
+            <div class="post_likes"></div>
         </div>
         {% endfor %}
         <nav aria-label="Page navigation example">
@@ -48,4 +52,14 @@
         </nav>
     </div>
 </div>
+
+{% if logged_in %}
+<script>
+    var logged_in = true;
+</script>
+{% else %}
+<script>
+    var logged_in = false;
+</script>
+{% endif %}
 {% endblock %}

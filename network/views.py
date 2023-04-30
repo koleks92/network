@@ -14,8 +14,10 @@ from .models import User, Post, Follow
 
 
 def index(request):
-    # Get user
-    user = get_object_or_404(User, username = request.user)
+    # Check if logged in
+    logged_in = False
+    if request.user.is_authenticated:
+        logged_in = True
 
     posts = Post.objects.all()
     posts = posts.order_by("-date").all()
@@ -30,7 +32,7 @@ def index(request):
 
     return render(request, "network/index.html", {
         "page_obj": page_obj,
-        "likes": 0
+        "logged_in": logged_in, 
     })
    
 
@@ -62,12 +64,18 @@ def profile(request, user):
     if user.username == str(request.user):
         current_user = True
 
+    # Check if logged in
+    logged_in = False
+    if request.user.is_authenticated:
+        logged_in = True
+
     return render(request, "network/profile.html",{
         "user_name": user.username,
         "user_posts": posts,
         "user_follows": user_follows,
         "user_followers": user_followers,
         "current_user": current_user,
+        "logged_in": logged_in
         })
 
 
@@ -158,18 +166,21 @@ def follow_unfollow(request, user_name):
         
         if Follow.objects.filter(user=request.user, followed_users=user_2_follow).exists():
             # Unfollow the user
-            Follow.objects.filter(user=request.user, followed_users=user_2_follow).delete()
+            follow = Follow.objects.get(user=request.user)
+            follow.followed_users.remove(user_2_follow)
             message = "Unfollowed"
         else:
             # Follow the user
             follow, created = Follow.objects.get_or_create(user=request.user)
-            follow.followed_users.set([user_2_follow])
+            follow.followed_users.add(user_2_follow)
             message = "Followed"
 
         return JsonResponse({"message": message}, status=200)
     
 @login_required
 def following(request):
+
+
     # Get user's follows
     try:
         user = Follow.objects.get(user = request.user)
@@ -187,7 +198,7 @@ def following(request):
 
         return render(request, "network/following.html", {
             "page_obj": page_obj,
-            "likes": 0
+            "logged_in": True
         })
     except:
         return render(request, "network/error.html", {
@@ -224,10 +235,39 @@ def edit(request, post_id):
     except:
         return render(request, "network/error.html", {
             "title": "Edit",
-            "message": "There's beenn an error. Please try again !"
+            "message": "There's been an error. Please try again !"
         })
 
+@csrf_exempt
+def likes(request, post_id):
+    post = get_object_or_404(Post, id = post_id)
 
+    try:
+        if request.method == "GET":
+            num_of_likes = len(post.likes.all())
+            liked = False
+
+            if request.user.is_authenticated and post.likes.filter(username = request.user).exists():
+                liked = True
+
+            response_data = {"num_of_likes": num_of_likes,
+                            "liked": liked}
+            
+            return JsonResponse(response_data)
+                
+        if request.method == "PUT" and request.user.is_authenticated:
+            if post.likes.filter(username = request.user).exists():
+                post.likes.remove(request.user)
+                return JsonResponse({"message": "Unliked"})
+            else:
+                post.likes.add(request.user)
+                return JsonResponse({"message": "Liked"})
+            
+    except:
+        return render(request, "network/error.html", {
+            "title": "Like",
+            "message": "There's been an error. Please try again !"
+        })
 
 
 

@@ -5,11 +5,11 @@
     <div id="profile_title"><h1>{{ user_name }}</h1></div>
     {% if current_user %}
     <script>
-        let current_user = true;
+        var current_user = true;
     </script>
     {% else %}
     <script>
-        let current_user = true;
+        var current_user = false;
     </script>
         <div id="follow_button"></div>
     {% endif %}
@@ -23,10 +23,14 @@
                     {% if current_user %}
                         <button class="edit_button" value="{{ post.id }}">Edit</button>
                     {% endif %}
+                    <div class="post_id">{{ post.id }}</div>
                     <div class="post_user">{{ post.user }}</div>
                     <div class="post_body">{{ post.body }}</div>
                     <div class="post_date">{{ post.date }}</div>
-                    <div class="post_likes">{{ likes }}</div>
+                    {% if user.is_authenticated %}
+                    <div class="post_like_button"></div>
+                    {% endif %}
+                    <div class="post_likes"></div>
                 </div>
                 {% endfor %}
             {% else %}
@@ -36,4 +40,14 @@
     </div>
     
 </div>
+
+{% if logged_in %}
+<script>
+    var logged_in = true;
+</script>
+{% else %}
+<script>
+    var logged_in = false;
+</script>
+{% endif %}
 {% endblock %}
