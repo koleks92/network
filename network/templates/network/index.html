@@ -23,7 +23,7 @@
         {% for post in page_obj %}
         <div class="post">
             <div class="post_id">{{ post.id }}</div>
-            <div class="post_user">{{ post.user }}</div>
+            <div class="post_user"><a href="{% url 'profile' post.user %}">{{ post.user }}</a></div>
             {% if request.user == post.user %}
                 <button class="edit_button btn btn-light btn-sm" value="{{ post.id }}">Edit</button>
             {% endif %}

@@ -44,8 +44,15 @@ def profile(request, user):
     try:
         posts = Post.objects.filter(user = user)
         posts = posts.order_by("-date").all()
+
+        # Show only 10 post at one page
+        paginator = Paginator(posts, 10)
+
+        # Get Page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
     except:
-        posts = False
+        page_obj = False
 
     # Get number of users that follow this profile
     try:
@@ -71,7 +78,7 @@ def profile(request, user):
 
     return render(request, "network/profile.html",{
         "user_name": user.username,
-        "user_posts": posts,
+        "page_obj": page_obj,
         "user_follows": user_follows,
         "user_followers": user_followers,
         "current_user": current_user,
@@ -179,8 +186,6 @@ def follow_unfollow(request, user_name):
     
 @login_required
 def following(request):
-
-
     # Get user's follows
     try:
         user = Follow.objects.get(user = request.user)
@@ -202,8 +207,8 @@ def following(request):
         })
     except:
         return render(request, "network/error.html", {
-            "title": "Followings",
-            "message": "This user doesn't follow anybody yet !"
+            "title": "Following",
+            "message": "There's been an error! Please try again!"
         })
     
 @csrf_exempt    

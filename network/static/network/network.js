@@ -58,6 +58,7 @@ else if (currentRoute.startsWith('/profile'))
                         // Update the UI to reflect the new follow status
                         const followButton = document.getElementById('follow_button');
                         const button = document.createElement('button');
+                        button.classList.add("btn", "btn-primary");
                         if (data.message === "Followed") {
                             button.innerText = 'Unfollow';
                         } else {
@@ -127,8 +128,10 @@ function edits()
             edit.innerHTML = body.innerHTML;
             postDiv.replaceChild(edit, body);
 
+
             // Create button to save 
             const save = document.createElement("button");
+            save.classList.add("save_button", "btn", "btn-primary", "btn-sm");
             save.innerText = "Save";
             // Add eventlistener and post via edit view 
             save.addEventListener('click', function() 

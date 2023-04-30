@@ -5,8 +5,26 @@ body {
 }
 
 #heading {
-    margin-top: 4rem;
+    margin-top: 5rem;
 }
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    padding-left: 1rem;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif 
+}
+
+
+
 
 /* Index */
 
@@ -17,7 +35,7 @@ body {
     padding: 1rem;
 }
 
-#new_post_text {
+#new_post_text, .edit_textarea {
     width: 100%;
     border: 1px solid rgb(200, 200, 200);
     border-radius: 0.4rem;
@@ -34,6 +52,11 @@ body {
     border: 1px solid rgb(200, 200, 200);
     border-radius: 0.4rem;
     margin-bottom: 0.5rem;
+    transition: 0.5s background-color ease-in-out;
+}
+
+.post:hover {
+    background-color: rgb(244, 244, 244);
 }
 
 .post_user {
@@ -55,8 +78,54 @@ body {
     display: inline-block;
 }
 
-/* Temp Divs */
+.save_button {
+    margin-bottom: 0.5rem;
+}
 
+/* Profile */
+#heading_div {
+    margin-top: 5rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  #profile_heading {
+    order: 1;
+  }
+  
+  #profile_info {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    order: 2;
+  }
+  
+  #profile_followers,
+  #profile_following {
+    display: flex;
+    align-items: center;
+    margin: 0.1rem 1rem;
+  }
+
+  #user_followers_text,
+  #user_following_text {
+    width: 100%;
+  }
+  
+  #user_followers,
+  #user_following {
+    margin-left: 0.5rem;
+  }
+
+  #follow_button {
+    margin: 0.5rem 0rem 0.5rem 0.5rem;
+  }
+
+
+
+
+/* Extra for backend */
 
 .post_id {
     display: none;

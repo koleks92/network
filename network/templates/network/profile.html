@@ -2,7 +2,19 @@
 
 {% block body %}
 <div id="profile_div">
-    <div id="profile_title"><h1>{{ user_name }}</h1></div>
+    <div id="heading_div">
+        <div id="profile_heading"><h1 id="heading_h1">{{ user_name }}</h1></div>
+        <div id="profile_info">
+            <div id="profile_followers">
+                <span id="user_followers_text">Followers: </span>
+                <span id="user_followers">{{ user_followers }}</span>
+            </div>
+            <div id="profile_following">
+            <span id="user_following_text">Follows: </span>
+            <span id="user_following">{{ user_follows }}</span>
+            </div>
+        </div>
+      </div>
     {% if current_user %}
     <script>
         var current_user = true;
@@ -13,17 +25,15 @@
     </script>
         <div id="follow_button"></div>
     {% endif %}
-    <div id="profile_followers">Followers: <span id="user_followers">{{ user_followers }}</span></div>
-    <div id="profile_following">Follows: {{ user_follows }}</div>
     <div id="profile_posts">
         <div id="all_posts">
-            {% if user_posts %}
-                {% for post in user_posts %}
+            {% if page_obj %}
+                {% for post in page_obj %}
                 <div class="post">
                     <div class="post_id">{{ post.id }}</div>
-                    <div class="post_user">{{ post.user }}</div>
+                    <div class="post_user"><a href="{% url 'profile' post.user %}">{{ post.user }}</a></div>
                     {% if current_user %}
-                    <button class="edit_button" value="{{ post.id }}">Edit</button>
+                    <button class="edit_button btn btn-light btn-sm" value="{{ post.id }}">Edit</button>
                     {% endif %}
                     <div class="post_body">{{ post.body }}</div>
                     <div class="post_date">{{ post.date }}</div>
@@ -33,6 +43,21 @@
                     <div class="post_likes"></div>
                 </div>
                 {% endfor %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                    {% endif %}
+                        <li class="page-item disabled"><a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link">Next</a></li>
+                    {% endif %}
+                    </ul>
+                </nav>
             {% else %}
                 There are no posts!
             {% endif %}
