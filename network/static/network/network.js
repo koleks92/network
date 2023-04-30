@@ -177,11 +177,11 @@ function likes()
                 const button = postDiv.querySelector('.post_like_button');
                 if (data.liked)
                 {
-                    button.innerHTML = "Click to unlike";
+                    button.innerHTML = '<i class="fa-solid fa-heart" style="color: #ff0000" aria-hidden="true"></i>';
                 }
                 else
                 {
-                    button.innerHTML = "Click to like";
+                    button.innerHTML = '<i class="fa-regular fa-heart" aria-hidden="true"></i>';
                 }
             }
 
@@ -193,7 +193,7 @@ function likes()
         postLikeButton.addEventListener('click', function(event) 
         {
             // Get the parent element of the clicked button
-            const postDiv = event.target.parentNode;
+            const postDiv = event.target.parentNode.parentNode;
             const post_id = postDiv.querySelector('.post_id').innerHTML;
             const post_likes = postDiv.querySelector('.post_likes');
             fetch(`/likes/${post_id}`, {
@@ -206,12 +206,12 @@ function likes()
                 console.log(data.message);
                 if (data.message === "Liked") 
                 {  // Change button and and one to numbe of likes
-                    postLikeButton.innerHTML = "Click to unlike";
+                    postLikeButton.innerHTML = '<i class="fa-solid fa-heart" style="color: #ff0000" aria-hidden="true"></i>';
                     post_likes.innerHTML = intNumberOfLikes + 1;
                 }
                 else if (data.message === "Unliked")
                 {   // Change button and remove on from number of
-                    postLikeButton.innerHTML = "Click to like";
+                    postLikeButton.innerHTML = '<i class="fa-regular fa-heart" aria-hidden="true"></i>';
                     post_likes.innerHTML = intNumberOfLikes - 1;
                 }
             })

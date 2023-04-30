@@ -1,16 +1,62 @@
-/* Temp Divs */
+/* Layout */
 
-.new_post {
-    border: 1px solid black;
+body {
+    margin: 2rem 1rem;
 }
 
+#heading {
+    margin-top: 4rem;
+}
+
+/* Index */
+
+.new_post {
+    border-radius: 0.4rem;
+    border: 1px solid rgb(200, 200, 200);
+    margin: 0rem 0rem 0.5rem 0.5rem;
+    padding: 1rem;
+}
+
+#new_post_text {
+    width: 100%;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 0.4rem;
+}
+
+/* Posts */
+
 #all_posts {
-    border: 1px solid black;
+    margin: 0rem 0rem 1rem 0.5rem;
 }
 
 .post {
-    border: 1px solid black;
+    padding:1rem;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 0.4rem;
+    margin-bottom: 0.5rem;
 }
+
+.post_user {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.post_date {
+    font-style: italic;
+    color: rgb(100, 100, 100);
+}
+
+.post_like_button {
+    display: inline-block;
+}
+
+.post_likes {
+    display: inline-block;
+}
+
+/* Temp Divs */
+
 
 .post_id {
     display: none;

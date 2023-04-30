@@ -20,11 +20,11 @@
             {% if user_posts %}
                 {% for post in user_posts %}
                 <div class="post">
-                    {% if current_user %}
-                        <button class="edit_button" value="{{ post.id }}">Edit</button>
-                    {% endif %}
                     <div class="post_id">{{ post.id }}</div>
                     <div class="post_user">{{ post.user }}</div>
+                    {% if current_user %}
+                    <button class="edit_button" value="{{ post.id }}">Edit</button>
+                    {% endif %}
                     <div class="post_body">{{ post.body }}</div>
                     <div class="post_date">{{ post.date }}</div>
                     {% if user.is_authenticated %}

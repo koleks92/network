@@ -2,7 +2,7 @@
 
 {% block body %}
 <div id="index_div">
-    <h1>All Posts</h1>
+    <h1 id="heading">All Posts</h1>
     {% if user.is_authenticated %}
         <div class="new_post">
             <div class="new_post_title">
@@ -14,7 +14,7 @@
                     <textarea id="new_post_text"></textarea>
                 </div>
                 <div class="new_post_button">
-                    <input type="submit" id="new_post_button"></input>
+                    <button type="submit" id="new_post_button" class="btn btn-primary">Post</input>
                 </div>
             </form>
         </div>
@@ -22,11 +22,11 @@
     <div id="all_posts">
         {% for post in page_obj %}
         <div class="post">
-            {% if request.user == post.user %}
-                <button class="edit_button" value="{{ post.id }}">Edit</button>
-            {% endif %}
             <div class="post_id">{{ post.id }}</div>
             <div class="post_user">{{ post.user }}</div>
+            {% if request.user == post.user %}
+                <button class="edit_button btn btn-light btn-sm" value="{{ post.id }}">Edit</button>
+            {% endif %}
             <div class="post_body">{{ post.body }}</div>
             <div class="post_date">{{ post.date }}</div>
             {% if user.is_authenticated %}
