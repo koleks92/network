@@ -32,6 +32,8 @@
                 <div class="post_date">{{ post.date }}</div>
                 {% if user.is_authenticated %}
                 <div class="post_like_button"></div>
+                {% else %}
+                <div class="post_like_icon"><i class="fa-solid fa-heart" style="color: #ff0000" aria-hidden="true"></i></div>
                 {% endif %}
                 <div class="post_likes"></div>
             </div>

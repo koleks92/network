@@ -223,6 +223,7 @@ function likes()
             
         })
 
+        // Like Heart animation 
         postLikeButton.addEventListener("mouseover", () => {
             const i = postLikeButton.querySelector('i');
             i.classList.add("fa-bounce");
