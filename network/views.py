@@ -219,7 +219,7 @@ def edit(request, post_id):
             # Get post
             post = Post.objects.get(id = post_id)
 
-            # Check if post user is actually logges in user
+            # Check if post user is actually signed in user (dobule-security)
             if post.user != request.user:
                 return render(request, "network/error.html", {
                 "title": "Edit",

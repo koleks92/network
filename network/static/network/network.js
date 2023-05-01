@@ -190,6 +190,8 @@ function likes()
 
         })
     });
+   
+
 
     const postLikesButtons = document.querySelectorAll('.post_like_button');
     postLikesButtons.forEach(function(postLikeButton) {
@@ -220,6 +222,16 @@ function likes()
             })
             
         })
+
+        postLikeButton.addEventListener("mouseover", () => {
+            const i = postLikeButton.querySelector('i');
+            i.classList.add("fa-bounce");
+        });
+
+        postLikeButton.addEventListener("mouseout", () => {
+            const i = postLikeButton.querySelector('i');
+            i.classList.remove("fa-bounce");
+          });
     });
 
 }
